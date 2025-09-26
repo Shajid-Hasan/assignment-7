@@ -1,6 +1,7 @@
 import React, { use } from 'react';
 import dotImg from "../../../assets/dot.png"
 import dateImg from "../../../assets/date.png"
+import Container from '../Conatainer/Container';
 const Card = ({ customerPromise }) => {
     const customerData = use(customerPromise)
 
@@ -8,7 +9,7 @@ const Card = ({ customerPromise }) => {
 
     console.log(customerData)
     return (
-        <div className="max-w-9/10 mx-auto">
+        <Container>
             <h1 className="text-2xl font-bold mt-10">Customer Tickets</h1>
 
             <div className="grid grid-cols-3 gap-5 mt-5">
@@ -55,8 +56,9 @@ const Card = ({ customerPromise }) => {
                     </div>
                 </aside>
             </div>
-        </div>
 
+        </Container>
+        
 
 
 
