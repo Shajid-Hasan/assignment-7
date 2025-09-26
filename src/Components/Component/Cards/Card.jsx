@@ -4,6 +4,8 @@ import dateImg from "../../../assets/date.png"
 const Card = ({ customerPromise }) => {
     const customerData = use(customerPromise)
 
+    
+
     console.log(customerData)
     return (
         <div className="max-w-9/10 mx-auto">
@@ -13,10 +15,7 @@ const Card = ({ customerPromise }) => {
                 {/* Cards Section */}
                 <div className="col-span-2 grid grid-cols-2 gap-5">
                     {customerData.map((customer) => (
-                        <div
-                            key={customer.id}
-                            className="w-full h-[210px] shadow-sm bg-white p-4 rounded-lg"
-                        >
+                        <div key={customer.id} className="w-full h-[210px] shadow-sm bg-white p-4 rounded-lg">
                             <div className="flex justify-between">
                                 <h2 className="text-[20px] font-semibold">{customer.title}</h2>
                                 <button className="flex w-[120px] text-[16px] p-2 gap-2 rounded-full bg-[#B9F8CF]">
@@ -46,8 +45,14 @@ const Card = ({ customerPromise }) => {
 
                 {/* Aside Section */}
                 <aside className="col-span-1 bg-gray-100 p-4 rounded-lg">
-                    <h1 className="text-xl font-bold mb-4">Task Status</h1>
-                    <p>Some extra info or filters can go here.</p>
+                    <div>
+                        <h1 className="text-xl font-bold mb-4">Task Status</h1>
+                        <p>Some extra info or filters can go here.</p>
+                    </div>
+                    <div className='mt-10'>
+                        <h1 className="text-xl font-bold mb-4">Reslve Task</h1>
+                        <p>No resolved task yet</p>
+                    </div>
                 </aside>
             </div>
         </div>
