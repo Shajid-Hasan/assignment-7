@@ -1,11 +1,23 @@
-import React, { use } from 'react';
+import React, { use, useState } from 'react';
 import dotImg from "../../../assets/dot.png"
 import dateImg from "../../../assets/date.png"
 import Container from '../Conatainer/Container';
-const Card = ({ customerPromise }) => {
+// import TaskStatus from '../TaskStatus/TaskStatus';
+const Card = ({ customerPromise, setProgressCount, progressCount }) => {
     const customerData = use(customerPromise)
 
-    
+    const [selectedTickets, setSelectedTickets] = useState([])
+
+
+    const handleCardClick = (customer) => {
+    const alreadyAdded = selectedTickets.find(ticket => ticket.id === customer.id)
+    if (!alreadyAdded ) {
+        setSelectedTickets([...selectedTickets, customer])
+        progressCount = progressCount + 1;
+        setProgressCount (progressCount)
+    }
+    console.log(alreadyAdded)
+}
 
     console.log(customerData)
     return (
@@ -15,8 +27,9 @@ const Card = ({ customerPromise }) => {
             <div className="grid grid-cols-3 gap-5 mt-5">
                 {/* Cards Section */}
                 <div className="col-span-2 grid grid-cols-2 gap-5">
+
                     {customerData.map((customer) => (
-                        <div key={customer.id} className="w-full h-[210px] shadow-sm bg-white p-4 rounded-lg">
+                        <div key={customer.id} onClick={() => {handleCardClick(customer)}} className="w-full h-[210px] shadow-sm bg-white p-4 rounded-lg">
                             <div className="flex justify-between">
                                 <h2 className="text-[20px] font-semibold">{customer.title}</h2>
                                 <button className="flex w-[120px] text-[16px] p-2 gap-2 rounded-full bg-[#B9F8CF]">
@@ -46,10 +59,24 @@ const Card = ({ customerPromise }) => {
 
                 {/* Aside Section */}
                 <aside className="col-span-1 bg-gray-100 p-4 rounded-lg">
-                    <div>
-                        <h1 className="text-xl font-bold mb-4">Task Status</h1>
-                        <p>Some extra info or filters can go here.</p>
-                    </div>
+                    <h1 className="text-xl font-bold mb-4">Task Status</h1>
+
+                    {selectedTickets.length > 0 ? (
+                        <div className="space-y-4">
+                            {selectedTickets.map(ticket => (
+                                <div key={ticket.id} className='shadow-sm p-4 font-bold text-xl'>
+                                    <h3>{ticket.title}</h3>
+                                    <button className="w-full bg-green-500 text-white mt-4 p-2 font-bold">
+                                        Complete
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <p className="text-gray-500">Click a card to see details here.</p>
+                    )}
+
+                    
                     <div className='mt-10'>
                         <h1 className="text-xl font-bold mb-4">Reslve Task</h1>
                         <p>No resolved task yet</p>
@@ -58,7 +85,7 @@ const Card = ({ customerPromise }) => {
             </div>
 
         </Container>
-        
+
 
 
 

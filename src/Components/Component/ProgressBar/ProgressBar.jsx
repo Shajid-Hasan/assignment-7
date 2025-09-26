@@ -1,7 +1,7 @@
 import React from 'react';
 import vector from "../../../assets/vector-1.png"
 import Container from '../Conatainer/Container';
-const ProgressBar = () => {
+const ProgressBar = ({progressCount}) => {
     return (
         <Container>
             <div className='flex flex-col lg:flex-row gap-5 mt-10 items-center justify-center bg-gray'>
@@ -9,7 +9,7 @@ const ProgressBar = () => {
                 <img src={vector} alt="" />
                 <div className='flex flex-col'>
                     <span className='text-white font-bold whitespace-nowrap text-[30px]'>In-Progress</span>
-                    <span className='flex justify-center text-[40px] text-white'>0</span>
+                    <span className='flex justify-center text-[40px] text-white'>{progressCount}</span>
                 </div>
                 <img className='rotate-y-180' src={vector} alt="" />
             </div>

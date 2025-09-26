@@ -1,13 +1,10 @@
-// import React, { use } from 'react';
-
+import React from "react";
 const TaskStatus = () => {
 
 
     return (
         <div>
-            {
-                // customerTask.map(task => )
-            }
+            
         </div>
     );
 };
