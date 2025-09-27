@@ -2,23 +2,50 @@ import React, { use, useState } from 'react';
 import dotImg from "../../../assets/dot.png"
 import dateImg from "../../../assets/date.png"
 import Container from '../Conatainer/Container';
-// import TaskStatus from '../TaskStatus/TaskStatus';
-const Card = ({ customerPromise, setProgressCount, progressCount }) => {
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+const Card = ({ customerPromise, setProgressCount, progressCount, resolvedCount, setResolvedCount }) => {
     const customerData = use(customerPromise)
 
     const [selectedTickets, setSelectedTickets] = useState([])
+    const [resolvedTickets, setResolvedTickets] = useState([])
+    const [customers, setCustomers] = useState([])
 
 
     const handleCardClick = (customer) => {
-    const alreadyAdded = selectedTickets.find(ticket => ticket.id === customer.id)
-    if (!alreadyAdded ) {
-        setSelectedTickets([...selectedTickets, customer])
-        progressCount = progressCount + 1;
-        setProgressCount (progressCount)
-    }
-    console.log(alreadyAdded)
-}
+        const alreadyAdded = selectedTickets.find(ticket => ticket.id === customer.id)
+        if (!alreadyAdded) {
+            setSelectedTickets([...selectedTickets, customer])
+            // Progress Count
+            progressCount = progressCount + 1;
+            setProgressCount(progressCount)
 
+            setCustomers(customers.filter(customerItem => customerItem.id !== customer.id))
+
+            toast.success("In Progress !");
+        }
+        else {
+            toast.info(`"${customer.title}" is already selected !`);
+        }
+    }
+
+    const handleComplete = (ticket) => {
+
+        setSelectedTickets(selectedTickets.filter(ticketItem => ticketItem.id !== ticket.id))
+
+        setResolvedTickets([...resolvedTickets, ticket])
+
+        // decrease progress count
+        setProgressCount(progressCount - 1)
+
+        // Resolved Count
+        resolvedCount = resolvedCount + 1;
+        setResolvedCount(resolvedCount)
+
+
+        toast.success("Completed !");
+    };
     console.log(customerData)
     return (
         <Container>
@@ -29,7 +56,7 @@ const Card = ({ customerPromise, setProgressCount, progressCount }) => {
                 <div className="col-span-2 grid grid-cols-2 gap-5">
 
                     {customerData.map((customer) => (
-                        <div key={customer.id} onClick={() => {handleCardClick(customer)}} className="w-full h-[210px] shadow-sm bg-white p-4 rounded-lg">
+                        <div key={customer.id} onClick={() => { handleCardClick(customer) }} className="w-full h-[210px] shadow-sm bg-white p-4 rounded-lg">
                             <div className="flex justify-between">
                                 <h2 className="text-[20px] font-semibold">{customer.title}</h2>
                                 <button className="flex w-[120px] text-[16px] p-2 gap-2 rounded-full bg-[#B9F8CF]">
@@ -66,27 +93,39 @@ const Card = ({ customerPromise, setProgressCount, progressCount }) => {
                             {selectedTickets.map(ticket => (
                                 <div key={ticket.id} className='shadow-sm p-4 font-bold text-xl'>
                                     <h3>{ticket.title}</h3>
-                                    <button className="w-full bg-green-500 text-white mt-4 p-2 font-bold">
+                                    <button onClick={() => handleComplete(ticket)} className="w-full bg-green-500 text-white mt-4 p-2 font-bold">
                                         Complete
                                     </button>
                                 </div>
                             ))}
                         </div>
                     ) : (
-                        <p className="text-gray-500">Click a card to see details here.</p>
+                        <h4 className="text-gray-500 text-center">
+                            No Task in progress <br>
+                            </br>
+                            <span className='text-[13px]'>Click on a ticket to start working</span>
+                        </h4>
                     )}
 
-                    
+                    {/* Resolved Section */}
                     <div className='mt-10'>
-                        <h1 className="text-xl font-bold mb-4">Reslve Task</h1>
-                        <p>No resolved task yet</p>
+                        <h1 className="text-xl font-bold mb-4">Resolved Tasks</h1>
+                        {resolvedTickets.length > 0 ? (
+                            <div className="space-y-4">
+                                {resolvedTickets.map(ticket => (
+                                    <div key={ticket.id} className="shadow-sm p-4 font-bold text-lg bg-green-100 rounded">
+                                        {ticket.title}
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <p>No resolved task yet</p>
+                        )}
                     </div>
                 </aside>
             </div>
 
         </Container>
-
-
 
 
     );
